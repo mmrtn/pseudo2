@@ -1,0 +1,39 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+
+</head>
+<body>
+<table id="example">
+    <thead>
+    <tr>
+        <th>firstName</th><th>lastName</th><th>instrument</th><th>born</th><th>alive</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>John</td><td>Lennon</td><td>guitar</td><td>1940</td><td>false</td>
+    </tr>
+    <tr>
+        <td>Paul</td><td>McCartney</td><td>bass</td><td>1942</td><td>true</td>
+    </tr>
+    <tr>
+        <td>Ringo</td><td>Starr</td><td>drums</td><td>1940</td><td>true</td>
+    </tr>
+    <tr>
+        <td>George</td><td>Harrison</td><td>guitar</td><td>1943</td><td>true</td>
+    </tr>
+    <tr>
+        <td>Micky</td><td>Mouse</td><td>sax</td><td>1955</td><td>true</td>
+    </tr>
+    </tbody>
+</table>
+<script>
+    $(function(){
+        $("#example").dataTable();
+    })
+</script>
+</body>
+</html>
