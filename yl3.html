@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Weather App</title>
+    <style>
+        #response div {
+            width: 300px;
+            padding: 5px 5px 5px 5px;
+        }
+    </style>
+</head>
+<script type='text/javascript' src='http://code.jquery.com/jquery-1.11.3.min.js'></script>
+
+
+<script>
+    var apiKey = '551ddbdd7740915860c9c1094bcc47c0';
+
+    function answer_view(info, area, desc, country) {
+        var htmlOutput = '<div>Current weather data for <strong>' + area + ' (' + country + '):' + '<br>' + desc + '</strong><ul>';
+
+        $.each(info, function (i, val) {
+            htmlOutput += '<li>' + i + " : " + val + '</li>';
+        });
+        htmlOutput += '</ul></div>';
+        $("#response").prepend(htmlOutput);
+    }
+
+    function sendRequest(city) {
+        var request = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=metric&APPID=" + apiKey;
+
+        $.when($.getJSON(request)).done(function (json) {
+            if (json['cod'] !== 200) {
+                alert("Error: Not found city - " + city);
+            }
+            else {
+                var desc = json['weather'][0]['description'];
+                var country = json['sys']['country'];
+                var cityName = json['name'];
+                var mainInfo = json['main'];
+
+                if (json['name'].toUpperCase() !== city.toUpperCase()) {
+                    var answer = confirm("Showing results for " + json['name'] + " (" + country + ")?");
+
+                    if (answer === true) {
+                        answer_view(mainInfo, cityName, desc, country);
+                    }
+                }
+                else {
+                    answer_view(mainInfo, cityName, desc, country);
+                }
+            }
+        });
+    }
+
+    $(document).ready(function () {
+
+        $("#userInput").bind('keypress', function (e) {
+            var inputValue = $("#userInput").val();
+            if (e.keyCode == 13) { //IF ENTER KEY PRESSED...
+                sendRequest(inputValue);
+            }
+        });
+    });
+</script>
+
+<body>
+<h2>Please insert the city: </h2>
+<input type="text" id="userInput">
+
+<br>
+<br>
+
+<div id="response"></div>
+</body>
+</html>
