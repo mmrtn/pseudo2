@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>In-ADS TEST</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script type="text/javascript" src="http://inaadress.maaamet.ee/inaadress/js/inaadress.min.js"></script>
+    <script type='text/javascript' src='http://code.jquery.com/jquery-1.11.3.min.js'></script>
+</head>
+<body>
+<div id="aadressiotsing" style="width: 300px; height: 400px"></div>
+<button id="btn">Salvesta</button>
+
+<script>
+    var aadress='';
+    function sendRequest(text) {
+        $.ajax('post.php', {
+            method: 'POST',
+            data: {
+                aadress: text
+            }
+        });
+        aadress='';
+    }
+
+    var inAadress = new InAadress({
+        "mode": "3",
+        "container": "aadressiotsing",
+        "nocss": false,
+        "appartment": 1,
+        searchLayers: ["EHITISHOONE"]
+    });
+
+    document.addEventListener('addressSelected', function (e) {
+        aadress = e.detail.aadress;
+        aadress = aadress.split(", ").reverse().join(", ");
+        inAadress.setAddress(aadress);
+        inAadress.hideResult();
+    });
+
+    $(document).ready(function () {
+        $('#btn').click(function () {
+            if (aadress) {
+                sendRequest(aadress);
+            }
+        });
+    });
+
+</script>
+
+</body>
+</html>
