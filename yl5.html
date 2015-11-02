@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generate Dummy Tables</title>
+    <link rel="stylesheet" type="text/css"
+          href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8"
+            src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+            src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+</head>
+
+
+<body>
+<script>
+    var value = '';
+    apiKey = "ZH5MiCkbaMmshsrNyZ59eAQ3h6M2p1R5nSkjsn7RTcryje9NEP";
+
+    function table_view(jsonArr) {
+
+        var arr = JSON.parse(jsonArr);
+        var htmlOutput = '<table id="dataTbl">';
+        htmlOutput += '<thead><tr><th>name</th><th>domain</th><th>tagline</th><th>address</th></tr></thead><tbody>';
+        $.each(arr, function (i, item) {
+            htmlOutput += '<tr>';
+            $.each(item, function (key, val) {
+                htmlOutput += '<td>' + val + '</td>';
+            });
+            htmlOutput += '</tr>';
+        });
+        htmlOutput += '</tbody></table>';
+        $("#response").prepend(htmlOutput);
+        $('#dataTbl').dataTable();
+    }
+
+
+    function sendRequest(text) {
+        $.ajax({
+            url: 'https://montanaflynn-dummy-data.p.mashape.com/business?count=' + text, // The URL to the API. You can get this in the API page of the API you intend to consume
+            type: 'GET', // The HTTP Method, can be GET POST PUT DELETE etc
+            data: {}, // Additional parameters here
+            dataType: 'json',
+            success: function (data) {
+            },
+            complete: function (data) {
+                $('#response').html('');
+                table_view(data['responseText']);
+            },
+            error: function (err) {},
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("X-Mashape-Authorization", apiKey); // Enter here your Mashape key
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $('#btn').click(function () {
+            value = $("#nrOfRows").val();
+            sendRequest(value);
+        });
+
+    });
+
+
+</script>
+<h2>Generate dummy business information</h2>
+
+<h3>Enter nr of records to return. </h3>
+<input id="nrOfRows" />
+
+<br>
+<button id="btn">Create Dummy Table!</button>
+<br>
+<br>
+
+<div id="response"></div>
+</body>
+</html>
